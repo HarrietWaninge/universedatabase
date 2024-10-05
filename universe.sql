@@ -243,6 +243,11 @@ INSERT INTO public.galaxy VALUES (3, 'Backward Galaxy', 'NGC 4622 is a face-on u
 --
 
 INSERT INTO public.star VALUES (1, 'UY Scuti', 1, true, NULL);
+INSERT INTO public.star VALUES (2, 'VY Canis Majoris', 1, true, NULL);
+INSERT INTO public.star VALUES (3, 'Alpheratz', 2, true, NULL);
+INSERT INTO public.star VALUES (4, 'Mirach', 2, true, NULL);
+INSERT INTO public.star VALUES (5, 'Gamma Andromedae', 2, true, NULL);
+INSERT INTO public.star VALUES (6, 'sun', 1, true, 8);
 
 
 --
@@ -270,7 +275,7 @@ SELECT pg_catalog.setval('public.planet_planet_id_seq', 1, false);
 -- Name: star_star_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.star_star_id_seq', 1, true);
+SELECT pg_catalog.setval('public.star_star_id_seq', 8, true);
 
 
 --
