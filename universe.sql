@@ -124,7 +124,7 @@ CREATE TABLE public.moon (
     name character varying(40) NOT NULL,
     distance_to_its_planet_in_millions numeric(12,1),
     is_nice_moon boolean,
-    circumference_in_km integer
+    planet_id integer
 );
 
 
@@ -280,6 +280,28 @@ INSERT INTO public.galaxy VALUES (3, 'Backward Galaxy', 'NGC 4622 is a face-on u
 -- Data for Name: moon; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.moon VALUES (1, 'Phobos', 0.0, false, 4);
+INSERT INTO public.moon VALUES (2, 'Deimos', 0.0, false, 4);
+INSERT INTO public.moon VALUES (3, 'Titania', 0.4, true, 7);
+INSERT INTO public.moon VALUES (4, 'Miranda', 0.1, false, 7);
+INSERT INTO public.moon VALUES (5, 'Setebos', 17.0, false, 7);
+INSERT INTO public.moon VALUES (6, 'Umbriel', 0.0, false, 7);
+INSERT INTO public.moon VALUES (7, 'Puck', 0.1, true, 7);
+INSERT INTO public.moon VALUES (8, 'Oberon', 0.6, false, 7);
+INSERT INTO public.moon VALUES (9, 'Ariel', 0.2, true, 7);
+INSERT INTO public.moon VALUES (10, 'Trinculo', 8.5, true, 7);
+INSERT INTO public.moon VALUES (11, 'Desdemona', 0.1, true, 7);
+INSERT INTO public.moon VALUES (12, 'Moon', 0.4, true, 1);
+INSERT INTO public.moon VALUES (13, 'Europa', 0.7, true, 5);
+INSERT INTO public.moon VALUES (14, 'Ganymedes', 1.1, true, 5);
+INSERT INTO public.moon VALUES (15, 'Io', 0.4, true, 5);
+INSERT INTO public.moon VALUES (16, 'Callisto', 1.9, true, 5);
+INSERT INTO public.moon VALUES (17, 'Kallichore', 23.3, false, 5);
+INSERT INTO public.moon VALUES (18, 'Amalthea', 0.2, false, 5);
+INSERT INTO public.moon VALUES (19, 'Lysithea', 11.7, false, 5);
+INSERT INTO public.moon VALUES (20, 'Euporie', 19.3, false, 5);
+INSERT INTO public.moon VALUES (21, 'Adrasthea', 0.1, false, 5);
+INSERT INTO public.moon VALUES (22, 'Carme', 23.4, false, 5);
 
 
 --
@@ -326,7 +348,7 @@ SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 3, true);
 -- Name: moon_moon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.moon_moon_id_seq', 1, false);
+SELECT pg_catalog.setval('public.moon_moon_id_seq', 22, true);
 
 
 --
