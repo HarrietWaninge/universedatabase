@@ -44,6 +44,41 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: constellation; Type: TABLE; Schema: public; Owner: freecodecamp
+--
+
+CREATE TABLE public.constellation (
+    constellation_id integer NOT NULL,
+    name character varying(64) NOT NULL,
+    description text
+);
+
+
+ALTER TABLE public.constellation OWNER TO freecodecamp;
+
+--
+-- Name: constellation_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
+--
+
+CREATE SEQUENCE public.constellation_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.constellation_id_seq OWNER TO freecodecamp;
+
+--
+-- Name: constellation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
+--
+
+ALTER SEQUENCE public.constellation_id_seq OWNED BY public.constellation.constellation_id;
+
+
+--
 -- Name: galaxy; Type: TABLE; Schema: public; Owner: freecodecamp
 --
 
@@ -51,7 +86,8 @@ CREATE TABLE public.galaxy (
     galaxy_id integer NOT NULL,
     name character varying(40) NOT NULL,
     description text,
-    number_of_stars integer
+    number_of_stars integer,
+    constellation character varying(60)
 );
 
 
@@ -87,7 +123,8 @@ CREATE TABLE public.moon (
     moon_id integer NOT NULL,
     name character varying(40) NOT NULL,
     distance_to_its_planet_in_millions numeric(12,1),
-    is_nice_moon boolean
+    is_nice_moon boolean,
+    circumference_in_km integer
 );
 
 
@@ -190,6 +227,13 @@ ALTER SEQUENCE public.star_star_id_seq OWNED BY public.star.star_id;
 
 
 --
+-- Name: constellation constellation_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.constellation ALTER COLUMN constellation_id SET DEFAULT nextval('public.constellation_id_seq'::regclass);
+
+
+--
 -- Name: galaxy galaxy_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
@@ -218,12 +262,18 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 
 
 --
+-- Data for Name: constellation; Type: TABLE DATA; Schema: public; Owner: freecodecamp
+--
+
+
+
+--
 -- Data for Name: galaxy; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.galaxy VALUES (1, 'Milky Way', 'The Milky Way[c] is the galaxy that includes the Solar System, with the name describing the galaxy''s appearance from Earth: a hazy band of light seen in the night sky formed from stars that cannot be individually distinguished by the naked eye.', NULL);
-INSERT INTO public.galaxy VALUES (2, 'Andromeda', 'The Andromeda Galaxy is a barred spiral galaxy and is the nearest major galaxy to the Milky Way. It was originally named the Andromeda Nebula and is cataloged as Messier 31, M31, and NGC 224.', NULL);
-INSERT INTO public.galaxy VALUES (3, 'Backward Galaxy', 'NGC 4622 is a face-on unbarred spiral galaxy with a very prominent ring structure located in the constellation Centaurus. The galaxy is a member of the Centaurus Cluster.', NULL);
+INSERT INTO public.galaxy VALUES (1, 'Milky Way', 'The Milky Way[c] is the galaxy that includes the Solar System, with the name describing the galaxy''s appearance from Earth: a hazy band of light seen in the night sky formed from stars that cannot be individually distinguished by the naked eye.', NULL, NULL);
+INSERT INTO public.galaxy VALUES (2, 'Andromeda', 'The Andromeda Galaxy is a barred spiral galaxy and is the nearest major galaxy to the Milky Way. It was originally named the Andromeda Nebula and is cataloged as Messier 31, M31, and NGC 224.', NULL, NULL);
+INSERT INTO public.galaxy VALUES (3, 'Backward Galaxy', 'NGC 4622 is a face-on unbarred spiral galaxy with a very prominent ring structure located in the constellation Centaurus. The galaxy is a member of the Centaurus Cluster.', NULL, NULL);
 
 
 --
@@ -236,6 +286,14 @@ INSERT INTO public.galaxy VALUES (3, 'Backward Galaxy', 'NGC 4622 is a face-on u
 -- Data for Name: planet; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.planet VALUES (1, 'EARTH', 1, true, 6);
+INSERT INTO public.planet VALUES (2, 'Mercury', 0, false, 6);
+INSERT INTO public.planet VALUES (3, 'Venus', 0, false, 6);
+INSERT INTO public.planet VALUES (4, 'Mars', 2, false, 6);
+INSERT INTO public.planet VALUES (5, 'Jupiter', 95, false, 6);
+INSERT INTO public.planet VALUES (6, 'Saturn', 146, false, 6);
+INSERT INTO public.planet VALUES (7, 'Uranus', 28, false, 6);
+INSERT INTO public.planet VALUES (8, 'Neptune', 16, false, 6);
 
 
 --
@@ -248,6 +306,13 @@ INSERT INTO public.star VALUES (3, 'Alpheratz', 2, true, NULL);
 INSERT INTO public.star VALUES (4, 'Mirach', 2, true, NULL);
 INSERT INTO public.star VALUES (5, 'Gamma Andromedae', 2, true, NULL);
 INSERT INTO public.star VALUES (6, 'sun', 1, true, 8);
+
+
+--
+-- Name: constellation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
+--
+
+SELECT pg_catalog.setval('public.constellation_id_seq', 1, false);
 
 
 --
@@ -268,7 +333,7 @@ SELECT pg_catalog.setval('public.moon_moon_id_seq', 1, false);
 -- Name: planet_planet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.planet_planet_id_seq', 1, false);
+SELECT pg_catalog.setval('public.planet_planet_id_seq', 8, true);
 
 
 --
@@ -276,6 +341,14 @@ SELECT pg_catalog.setval('public.planet_planet_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.star_star_id_seq', 8, true);
+
+
+--
+-- Name: constellation constellation_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.constellation
+    ADD CONSTRAINT constellation_pkey PRIMARY KEY (constellation_id);
 
 
 --
@@ -340,6 +413,14 @@ ALTER TABLE ONLY public.planet
 
 ALTER TABLE ONLY public.star
     ADD CONSTRAINT star_pkey PRIMARY KEY (star_id);
+
+
+--
+-- Name: constellation unique_constellation_id; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.constellation
+    ADD CONSTRAINT unique_constellation_id UNIQUE (constellation_id);
 
 
 --
