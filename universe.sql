@@ -87,7 +87,7 @@ CREATE TABLE public.galaxy (
     name character varying(40) NOT NULL,
     description text,
     number_of_stars integer,
-    constellation character varying(60)
+    constellation_id integer
 );
 
 
@@ -265,6 +265,9 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 -- Data for Name: constellation; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.constellation VALUES (1, 'ursa major', 'Ursa Major, also known as the Great Bear, is a constellation in the northern sky, whose associated mythology likely dates back into prehistory. Its Latin name means "greater (or larger) bear", referring to and contrasting it with nearby Ursa Minor, the lesser bear');
+INSERT INTO public.constellation VALUES (2, 'virgo', 'Virgo is one of the constellations of the zodiac. Its name is Latin for maiden, and its old astronomical symbol is . Between Leo to the west and Libra to the east, it is the second-largest constellation in the sky (after Hydra) and the largest constellation in the zodiac.');
+INSERT INTO public.constellation VALUES (3, 'coma berenices', 'Coma Berenices is an ancient asterism in the northern sky, which has been defined as one of the 88 modern constellations. It is in the direction of the fourth galactic quadrant, between Leo and Boötes, and it is visible in both hemispheres.');
 
 
 --
@@ -274,6 +277,9 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 INSERT INTO public.galaxy VALUES (1, 'Milky Way', 'The Milky Way[c] is the galaxy that includes the Solar System, with the name describing the galaxy''s appearance from Earth: a hazy band of light seen in the night sky formed from stars that cannot be individually distinguished by the naked eye.', NULL, NULL);
 INSERT INTO public.galaxy VALUES (2, 'Andromeda', 'The Andromeda Galaxy is a barred spiral galaxy and is the nearest major galaxy to the Milky Way. It was originally named the Andromeda Nebula and is cataloged as Messier 31, M31, and NGC 224.', NULL, NULL);
 INSERT INTO public.galaxy VALUES (3, 'Backward Galaxy', 'NGC 4622 is a face-on unbarred spiral galaxy with a very prominent ring structure located in the constellation Centaurus. The galaxy is a member of the Centaurus Cluster.', NULL, NULL);
+INSERT INTO public.galaxy VALUES (4, 'Cigar galaxy', 'Appears similar in shape to a cigar.', NULL, 1);
+INSERT INTO public.galaxy VALUES (5, 'Butterfly galaxies', 'Looks are similar to a butterfly.', NULL, 2);
+INSERT INTO public.galaxy VALUES (6, 'Black eye galaxy', 'It has a spectacular dark band of absorbing dust in front of the galaxy''s bright nucleus, giving rise to its nicknames of the "Black Eye" or "Evil Eye" galaxy.', NULL, 3);
 
 
 --
@@ -316,6 +322,11 @@ INSERT INTO public.planet VALUES (5, 'Jupiter', 95, false, 6);
 INSERT INTO public.planet VALUES (6, 'Saturn', 146, false, 6);
 INSERT INTO public.planet VALUES (7, 'Uranus', 28, false, 6);
 INSERT INTO public.planet VALUES (8, 'Neptune', 16, false, 6);
+INSERT INTO public.planet VALUES (9, 'ceres', 0, false, 6);
+INSERT INTO public.planet VALUES (10, 'Haumea', 0, false, 6);
+INSERT INTO public.planet VALUES (11, 'pluto', 5, false, 6);
+INSERT INTO public.planet VALUES (12, 'makemake', 1, false, 6);
+INSERT INTO public.planet VALUES (13, 'eris', 1, false, 6);
 
 
 --
@@ -334,14 +345,14 @@ INSERT INTO public.star VALUES (6, 'sun', 1, true, 8);
 -- Name: constellation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.constellation_id_seq', 1, false);
+SELECT pg_catalog.setval('public.constellation_id_seq', 3, true);
 
 
 --
 -- Name: galaxy_galaxy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 3, true);
+SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 6, true);
 
 
 --
@@ -355,7 +366,7 @@ SELECT pg_catalog.setval('public.moon_moon_id_seq', 22, true);
 -- Name: planet_planet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.planet_planet_id_seq', 8, true);
+SELECT pg_catalog.setval('public.planet_planet_id_seq', 13, true);
 
 
 --
@@ -443,6 +454,22 @@ ALTER TABLE ONLY public.star
 
 ALTER TABLE ONLY public.constellation
     ADD CONSTRAINT unique_constellation_id UNIQUE (constellation_id);
+
+
+--
+-- Name: galaxy constellation_id_foreign_galaxy; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT constellation_id_foreign_galaxy FOREIGN KEY (constellation_id) REFERENCES public.constellation(constellation_id);
+
+
+--
+-- Name: moon foreign_key_planet_of_moon; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.moon
+    ADD CONSTRAINT foreign_key_planet_of_moon FOREIGN KEY (planet_id) REFERENCES public.planet(planet_id);
 
 
 --
